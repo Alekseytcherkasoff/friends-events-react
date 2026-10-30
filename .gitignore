@@ -1,0 +1,17 @@
+# секреты и локальные настройки
+/config/db_params.php
+
+# зависимости и сборка
+node_modules/
+/web/
+frontend/dist/
+
+# OpenServer, редакторы, системные файлы
+/.osp/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# логи
+*.log
