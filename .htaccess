@@ -1,8 +1,23 @@
 AddDefaultCharset utf-8
+Options -Indexes
 
-RewriteEngine on
+RewriteEngine On
 RewriteBase /
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php 
+# Уже обработанные адреса не трогаем (иначе правила будут зацикливаться)
+RewriteRule ^index\.php$ - [L]
+RewriteRule ^web/ - [L]
+
+# Служебные папки и файлы закрыты от прямого доступа
+RewriteRule ^(\.git|\.osp|config|models|controllers|components|database|frontend|docs)(/|$) - [F,L]
+RewriteRule \.sql$ - [F,L]
+
+# /api/... обрабатывает PHP
+RewriteRule ^api(/|$) index.php [L]
+
+# Готовые файлы React-приложения (скрипты, стили, картинки)
+RewriteCond %{DOCUMENT_ROOT}/web%{REQUEST_URI} -f
+RewriteRule ^(.*)$ web/$1 [L]
+
+# Все остальные адреса открывает React (его собственные маршруты)
+RewriteRule ^ web/index.html [L]
